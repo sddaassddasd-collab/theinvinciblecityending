@@ -25,6 +25,12 @@
     .hidden{display:none}
     .lang{opacity:.92}
     .footer{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}
+    /* 完成頁：五區橫向文字區 */
+    .zones{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:14px}
+    .zone{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.22);border-radius:12px;padding:16px;min-height:160px}
+    .zone h3{margin:0 0 8px;font-size:14px;color:#9fb3d8;font-weight:700}
+    @media (max-width: 1024px){.zones{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 640px){.zones{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -45,23 +51,45 @@
 
   <section class="card hidden" id="view-done" aria-live="polite">
     <h1>你已完成體驗</h1>
-    <div class="stack lang">
-      <p>English：You have completed the experience.</p>
-      <p>粵語：你已完成體驗。</p>
-      <p>한국어：체험을 완료하셨습니다.</p>
-      <p>Tiếng Việt：Bạn đã hoàn tất trải nghiệm.</p>
+    <p class="hint">請在下方五個區塊貼上你的文字（程式碼內已以註解標示 SECTION 1–5）。</p>
+
+    <div class="zones">
+      <div class="zone" id="zone1">
+        <h3>區塊 1 / Section 1</h3>
+        <!-- SECTION 1: 在此貼上你的文字（可替換以下整段） -->
+        <p>（請將你的文字貼在這裡）</p>
+      </div>
+      <div class="zone" id="zone2">
+        <h3>區塊 2 / Section 2</h3>
+        <!-- SECTION 2: 在此貼上你的文字（可替換以下整段） -->
+        <p>（請將你的文字貼在這裡）</p>
+      </div>
+      <div class="zone" id="zone3">
+        <h3>區塊 3 / Section 3</h3>
+        <!-- SECTION 3: 在此貼上你的文字（可替換以下整段） -->
+        <p>（請將你的文字貼在這裡）</p>
+      </div>
+      <div class="zone" id="zone4">
+        <h3>區塊 4 / Section 4</h3>
+        <!-- SECTION 4: 在此貼上你的文字（可替換以下整段） -->
+        <p>（請將你的文字貼在這裡）</p>
+      </div>
+      <div class="zone" id="zone5">
+        <h3>區塊 5 / Section 5</h3>
+        <!-- SECTION 5: 在此貼上你的文字（可替換以下整段） -->
+        <p>（請將你的文字貼在這裡）</p>
+      </div>
     </div>
+
     <div class="btns">
-      <button class="btn-primary" id="restartBtn">重新開始</button>
-      <button class="btn-secondary" id="backBtn">返回上一頁</button>
+      <button class="btn-primary" id="thankyouBtn">Thank You</button>
     </div>
     <div class="footer"><span class="tag" id="ipTag" aria-live="polite"></span></div>
-    <p class="hint">*「重新開始」會清除此 IP 的計數。</p>
+    <p class="hint">* 點擊「Thank You」將開啟問卷分頁。</p>
   </section>
 
   <script>
-    // ====== 基本設定 ======
-    const IP_API = 'https://api.ipify.org?format=json'; // 以第三方服務取得公開 IP（僅示範用）
+    const IP_API = 'https://api.ipify.org?format=json';
     const LS_PREFIX = 'ipClicks:';
     const LAST_IP_KEY = 'lastIP';
 
@@ -70,10 +98,8 @@
     const $statusTag = document.getElementById('statusTag');
     const $ipTag = document.getElementById('ipTag');
     const $close = document.getElementById('closeBtn');
-    const $restart = document.getElementById('restartBtn');
-    const $back = document.getElementById('backBtn');
+    const $thankyou = document.getElementById('thankyouBtn');
 
-    // 以 hash 做為兩頁切換：#done 代表完成頁
     function route(){
       const isDone = location.hash.replace('#','') === 'done';
       $exp.classList.toggle('hidden', isDone);
@@ -82,7 +108,6 @@
     window.addEventListener('hashchange', route);
     route();
 
-    // 取得 IP（若失敗，使用裝置本地 fallback key）
     async function getIP(){
       try{
         const r = await fetch(IP_API, {cache:'no-store'});
@@ -91,8 +116,7 @@
           localStorage.setItem(LAST_IP_KEY, j.ip);
           return j.ip;
         }
-      }catch(e){/* ignore */}
-      // Fallback：若無法取得 IP，使用匿名裝置 key（僅本機有效）
+      }catch(e){}
       let devKey = localStorage.getItem(LAST_IP_KEY);
       if(!devKey){
         devKey = 'device-' + Math.random().toString(36).slice(2,10);
@@ -102,53 +126,26 @@
     }
 
     function getCountKey(ip){ return LS_PREFIX + ip; }
+    function getCount(ip){ const v = localStorage.getItem(getCountKey(ip)); return v ? parseInt(v,10) || 0 : 0; }
+    function setCount(ip, n){ localStorage.setItem(getCountKey(ip), String(n)); }
 
-    function getCount(ip){
-      const v = localStorage.getItem(getCountKey(ip));
-      return v ? parseInt(v,10) || 0 : 0;
-    }
+    function showTag(msg){ $statusTag.textContent = msg || ''; }
 
-    function setCount(ip, n){
-      localStorage.setItem(getCountKey(ip), String(n));
-    }
-
-    function clearCount(ip){
-      localStorage.removeItem(getCountKey(ip));
-    }
-
-    function showTag(msg){
-      $statusTag.textContent = msg || '';
-    }
-
-    // ====== 主要互動：關閉 -> 計數 -> 第四次導向完成頁 ======
     $close.addEventListener('click', async () => {
       const ip = await getIP();
       const current = getCount(ip) + 1;
       setCount(ip, current);
       showTag(`此 IP（${ip}）已點擊 ${current} 次`);
       if(current >= 4){
-        // 進入完成頁
         $ipTag.textContent = `IP：${ip}`;
         location.hash = '#done';
       }
     });
 
-    // ====== 完成頁：重新開始（清空此 IP 計數） ======
-    $restart.addEventListener('click', async () => {
-      const ip = await getIP();
-      clearCount(ip);
-      $ipTag.textContent = `已重置：IP ${ip}`;
-      // 回到體驗頁
-      location.hash = '';
-      showTag('已重置計數，請再次開始。');
+    $thankyou.addEventListener('click', () => {
+      window.open('https://docs.google.com/forms/d/e/1FAIpQLSe6uaMAc0PGwD8ei0eOjJXPHfbTOFkueQK5XhAeWXUuklrn6A/viewform', '_blank');
     });
 
-    // 可選：返回上一頁（不清空）
-    $back.addEventListener('click', () => {
-      history.back();
-    });
-
-    // 初始：若一開始就位於完成頁，顯示 IP 供提示
     (async () => {
       const ip = await getIP();
       $ipTag.textContent = ip ? `IP：${ip}` : '';
