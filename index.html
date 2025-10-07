@@ -25,8 +25,8 @@
     .hidden{display:none}
     .lang{opacity:.92}
     .footer{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}
-    /* 完成頁：五區橫向文字區 */
-    .zones{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:14px}
+    /* 完成頁：四區橫向文字區 */
+    .zones{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px}
     .zone{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.22);border-radius:12px;padding:16px;min-height:160px}
     .zone h3{margin:0 0 8px;font-size:14px;color:#9fb3d8;font-weight:700}
     @media (max-width: 1024px){.zones{grid-template-columns:repeat(2,1fr)}}
@@ -37,21 +37,20 @@
   <main class="card" id="view-experience" aria-live="polite">
     <h1>體驗結束，請前往下一個體驗。</h1>
     <div class="stack lang">
-      <p>This session has ended. Please proceed to the next experience.</p>
-      <p>體驗結束，請前往下一個體驗。</p>
-      <p>체험이 종료되었습니다. 다음 체험으로 이동해 주세요.</p>
-      <p>Trải nghiệm đã kết thúc, vui lòng chuyển sang trải nghiệm tiếp theo.</p>
+      <p>English：This session has ended. Please proceed to the next experience.</p>
+      <p>粵語：體驗結束，請前往下一個體驗。</p>
+      <p>한국어：체험이 종료되었습니다. 다음 체험으로 이동해 주세요.</p>
+      <p>Tiếng Việt：Trải nghiệm đã kết thúc, vui lòng chuyển sang trải nghiệm tiếp theo.</p>
     </div>
     <div class="btns">
       <button class="btn-primary" id="closeBtn">關閉</button>
     </div>
     <div class="footer"><span class="tag" id="statusTag" aria-live="polite"></span></div>
-    <p class="hint">* 本頁面會以您的 IP 為單位計數「關閉」按鈕點擊次數。當同一個 IP 第四次點擊後，將自動前往完成頁。</p>
   </main>
 
   <section class="card hidden" id="view-done" aria-live="polite">
     <h1>你已完成體驗</h1>
-    <p class="hint">請在下方五個區塊貼上你的文字（程式碼內已以註解標示 SECTION 1–5）。</p>
+    <p class="hint">請在下方四個區塊貼上你的文字（程式碼內已以註解標示 SECTION 1–4）。</p>
 
     <div class="zones">
       <div class="zone" id="zone1">
@@ -74,18 +73,13 @@
         <!-- SECTION 4: 在此貼上你的文字（可替換以下整段） -->
         <p>（請將你的文字貼在這裡）</p>
       </div>
-      <div class="zone" id="zone5">
-        <h3>區塊 5 / Section 5</h3>
-        <!-- SECTION 5: 在此貼上你的文字（可替換以下整段） -->
-        <p>（請將你的文字貼在這裡）</p>
-      </div>
     </div>
 
     <div class="btns">
       <button class="btn-primary" id="thankyouBtn">Thank You</button>
     </div>
     <div class="footer"><span class="tag" id="ipTag" aria-live="polite"></span></div>
-    <p class="hint">* 點擊「Thank You」將開啟問卷分頁。</p>
+    <p class="hint">* 點擊「Thank You」將開啟問卷分頁，並重置此 IP 的點擊計數（重新計算）。</p>
   </section>
 
   <script>
@@ -129,21 +123,31 @@
     function getCount(ip){ const v = localStorage.getItem(getCountKey(ip)); return v ? parseInt(v,10) || 0 : 0; }
     function setCount(ip, n){ localStorage.setItem(getCountKey(ip), String(n)); }
 
+    function clearCount(ip){ localStorage.removeItem(getCountKey(ip)); }
+
     function showTag(msg){ $statusTag.textContent = msg || ''; }
 
     $close.addEventListener('click', async () => {
       const ip = await getIP();
       const current = getCount(ip) + 1;
       setCount(ip, current);
-      showTag(`此 IP（${ip}）已點擊 ${current} 次`);
+      showTag([
+        `你已觀看 ${current} 個體驗 | You have viewed ${current} experiences | 你已瀏覽 ${current} 個體驗 | 지금까지 ${current}개의 체험을 보셨습니다 | Bạn đã xem ${current} trải nghiệm`
+      ]);
       if(current >= 4){
         $ipTag.textContent = `IP：${ip}`;
         location.hash = '#done';
       }
     });
 
-    $thankyou.addEventListener('click', () => {
+    $thankyou.addEventListener('click', async () => {
+      const ip = await getIP();
+      // 先清除此 IP 的點擊次數，讓後續重新計算
+      clearCount(ip);
+      // 再開啟問卷新分頁
       window.open('https://docs.google.com/forms/d/e/1FAIpQLSe6uaMAc0PGwD8ei0eOjJXPHfbTOFkueQK5XhAeWXUuklrn6A/viewform', '_blank');
+      // 顯示狀態提示
+      $ipTag.textContent = `已重置並前往問卷：IP ${ip}`;
     });
 
     (async () => {
