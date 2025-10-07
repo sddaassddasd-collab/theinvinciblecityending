@@ -49,8 +49,14 @@
   </main>
 
   <section class="card hidden" id="view-done" aria-live="polite">
-    <h1>你已完成體驗</h1>
-    <p class="hint">請在下方四個區塊貼上你的文字（程式碼內已以註解標示 SECTION 1–4）。</p>
+    <h1>你已完成體驗<br>
+      <span style="font-size:0.8em;opacity:0.8;display:block;margin-top:4px">
+        English: You have completed the experience.<br>
+        粵語: 你已完成體驗。<br>
+        한국어: 체험을 완료하셨습니다.<br>
+        Tiếng Việt: Bạn đã hoàn tất trải nghiệm.
+      </span>
+    </h1>
 
     <div class="zones">
       <div class="zone" id="zone1">
@@ -79,7 +85,6 @@
       <button class="btn-primary" id="thankyouBtn">Thank You</button>
     </div>
     <div class="footer"><span class="tag" id="ipTag" aria-live="polite"></span></div>
-    <p class="hint">* 點擊「Thank You」將開啟問卷分頁，並重置此 IP 的點擊計數（重新計算）。</p>
   </section>
 
   <script>
@@ -122,7 +127,6 @@
     function getCountKey(ip){ return LS_PREFIX + ip; }
     function getCount(ip){ const v = localStorage.getItem(getCountKey(ip)); return v ? parseInt(v,10) || 0 : 0; }
     function setCount(ip, n){ localStorage.setItem(getCountKey(ip), String(n)); }
-
     function clearCount(ip){ localStorage.removeItem(getCountKey(ip)); }
 
     function showTag(msg){ $statusTag.textContent = msg || ''; }
@@ -131,23 +135,24 @@
       const ip = await getIP();
       const current = getCount(ip) + 1;
       setCount(ip, current);
-      showTag([
-        `你已觀看 ${current} 個體驗 | You have viewed ${current} experiences | 你已瀏覽 ${current} 個體驗 | 지금까지 ${current}개의 체험을 보셨습니다 | Bạn đã xem ${current} trải nghiệm`
-      ]);
-      if(current >= 4){
+      showTag(`你已觀看 ${current} 個體驗 | You have viewed ${current} experiences | 你已瀏覽 ${current} 個體驗 | 지금까지 ${current}개의 체험을 보셨습니다 | Bạn đã xem ${current} trải nghiệm`);
+      if (current >= 4) {
         $ipTag.textContent = `IP：${ip}`;
         location.hash = '#done';
+      } else {
+        // 嘗試關閉分頁（只有由腳本開啟的分頁才允許關閉）
+        window.close();
       }
     });
 
     $thankyou.addEventListener('click', async () => {
       const ip = await getIP();
-      // 先清除此 IP 的點擊次數，讓後續重新計算
       clearCount(ip);
-      // 再開啟問卷新分頁
+      localStorage.removeItem(LAST_IP_KEY);
       window.open('https://docs.google.com/forms/d/e/1FAIpQLSe6uaMAc0PGwD8ei0eOjJXPHfbTOFkueQK5XhAeWXUuklrn6A/viewform', '_blank');
-      // 顯示狀態提示
-      $ipTag.textContent = `已重置並前往問卷：IP ${ip}`;
+      location.hash = '';
+      $statusTag.textContent = '計數已重置（Counter reset）';
+      $ipTag.textContent = '';
     });
 
     (async () => {
