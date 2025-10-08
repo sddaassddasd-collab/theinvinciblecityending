@@ -1,9 +1,10 @@
+
 <!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>體驗頁</title>
+  <title>Finale</title>
   <style>
     :root{
       --bg:#0b1220; --card:#111a2b; --fg:#e8eef9; --muted:#a9b7d1; --accent:#6aa1ff;
@@ -14,71 +15,73 @@
     body{display:grid;place-items:center;background:radial-gradient(60% 60% at 50% 40%, #0f172a, #0b1220);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","Helvetica Neue",Arial,sans-serif;padding:24px}
     .card{width:min(880px,94vw);background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 28px 22px;border:1px solid rgba(255,255,255,.06)}
     h1{margin:0 0 8px;font-size:clamp(22px,3.5vw,32px);font-weight:700;letter-spacing:.3px}
-    p{margin:0;color:var(--muted);line-height:1.6}
+    p{margin:0;color:var(--muted);line-height:1.8;white-space:pre-line}
     .stack{display:grid;gap:14px;margin-top:10px}
     .btns{display:flex;gap:12px;margin-top:20px}
     button{appearance:none;border:0;border-radius:14px;padding:.9em 1.2em;font-size:16px;font-weight:700;cursor:pointer}
     .btn-primary{background:var(--accent);color:#0b1220}
     .btn-secondary{background:transparent;color:var(--fg);border:1px solid rgba(255,255,255,.18)}
-    .hint{margin-top:10px;font-size:12px;color:#9fb3d8}
     .tag{display:inline-block;font-size:12px;padding:.2em .6em;border:1px solid rgba(255,255,255,.15);border-radius:999px;color:#9fb3d8}
     .hidden{display:none}
-    .lang{opacity:.92}
     .footer{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}
-    /* 完成頁：四區橫向文字區 */
-    .zones{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px}
-    .zone{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.22);border-radius:12px;padding:16px;min-height:160px}
+    /* 完成頁：四區垂直排列 */
+    .zones{display:flex;flex-direction:column;gap:20px;margin-top:14px}
+    .zone{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.22);border-radius:12px;padding:16px;min-height:160px;overflow:auto}
     .zone h3{margin:0 0 8px;font-size:14px;color:#9fb3d8;font-weight:700}
-    @media (max-width: 1024px){.zones{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width: 640px){.zones{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <main class="card" id="view-experience" aria-live="polite">
     <h1>體驗結束，請前往下一個體驗。</h1>
     <div class="stack lang">
-      <p>English：This session has ended. Please proceed to the next experience.</p>
-      <p>粵語：體驗結束，請前往下一個體驗。</p>
-      <p>한국어：체험이 종료되었습니다. 다음 체험으로 이동해 주세요.</p>
-      <p>Tiếng Việt：Trải nghiệm đã kết thúc, vui lòng chuyển sang trải nghiệm tiếp theo.</p>
+      <p>This session has ended. Please proceed to the next experience.</p>
+      <p>체험이 종료되었습니다. 다음 체험으로 이동해 주세요.</p>
+      <p>Trải nghiệm đã kết thúc, vui lòng chuyển sang trải nghiệm tiếp theo.</p>
     </div>
     <div class="btns">
-      <button class="btn-primary" id="closeBtn">關閉</button>
+      <button class="btn-primary" id="closeBtn">關閉Close</button>
     </div>
     <div class="footer"><span class="tag" id="statusTag" aria-live="polite"></span></div>
   </main>
 
   <section class="card hidden" id="view-done" aria-live="polite">
-    <h1>你已完成體驗<br>
-      <span style="font-size:0.8em;opacity:0.8;display:block;margin-top:4px">
-        English: You have completed the experience.<br>
-        粵語: 你已完成體驗。<br>
-        한국어: 체험을 완료하셨습니다.<br>
-        Tiếng Việt: Bạn đã hoàn tất trải nghiệm.
+	<div style="text-align:center; line-height:1.8;">
+   
+ 	<h1>你已完成體驗<br>
+
+      		<span style="font-size:0.8em;opacity:0.8;display:block;margin-top:4px">
+        	You have completed the experience.<br>
+        	체험을 완료하셨습니다.<br>
+        	Bạn đã hoàn tất trải nghiệm.
       </span>
     </h1>
-
+</div>
     <div class="zones">
       <div class="zone" id="zone1">
-        <h3>區塊 1 / Section 1</h3>
-        <!-- SECTION 1: 在此貼上你的文字（可替換以下整段） -->
-        <p>（請將你的文字貼在這裡）</p>
+        <h3>隱蔽的城市之二：萊莎</h3>
+        <p>在萊莎，生活是不快樂的。 街上的人邊走邊絞扭著雙手，咒罵啼哭的孩子，靠在河邊的鐵欄上，握拳抵著太陽穴。 清晨剛從惡夢中醒來，另一場惡夢便隨之展開。 在工場裡，你的手指隨時可能被錘子砸中，或被針刺傷； 又或得面對商人與銀行家帳冊上錯得一塌糊塗的數字， 或是望著酒館櫃檯上一列空杯發呆。 然而，在這些地方，只要低下頭，總還能掩飾那雙充滿憂愁的眼睛。 至於屋裡的情況更糟，不必走進門內便能預料——夏天時，窗戶會傳出吵鬧與杯盤破碎的回音。
+然而，在萊莎的每一刻，都能聽見窗邊孩子的笑聲。 他笑，是因為看見一條狗撲上小屋，搶食掉在地上的一塊燒餅。 那燒餅是棚架上的石匠掉下的； 彼時他正高聲向一位年輕的女侍應喊道：「好心人啊，讓我嚐一口吧！」 那位少女捧著熱騰騰的肉湯，滿心喜悅地送給一位剛完成交易的製傘工人。 一名愛上青年軍官的貴婦，正在賽馬場上炫耀她鑲著花邊的白陽傘。 馬背上的軍官在最後一次跳越時，對她微笑。 他是快樂的人，然而他的馬更快樂—— 因為當牠越過欄杆時，看見一隻鷓鴣在天空飛翔。 那快樂的鳥兒剛被一位畫家放出囚籠； 快樂的畫家完成了牠的插圖，細細描繪每一根紅黃斑點的羽毛。 而在那本插畫書的頁面上，印著哲學家的話：
+「憂愁的城市萊莎，也有一根無形的線， 在某個剎那，把一個生命連結到另一個生命， 然後鬆開，又在兩個移動的點之間伸展， 快速地繪出新的圖形。 因此，在每一秒鐘裡，不快樂的城市都包藏著一座快樂的城市——只不過，它自己並不知曉罷了。」</p>
       </div>
-      <div class="zone" id="zone2">
-        <h3>區塊 2 / Section 2</h3>
-        <!-- SECTION 2: 在此貼上你的文字（可替換以下整段） -->
-        <p>（請將你的文字貼在這裡）</p>
-      </div>
-      <div class="zone" id="zone3">
-        <h3>區塊 3 / Section 3</h3>
-        <!-- SECTION 3: 在此貼上你的文字（可替換以下整段） -->
-        <p>（請將你的文字貼在這裡）</p>
-      </div>
-      <div class="zone" id="zone4">
-        <h3>區塊 4 / Section 4</h3>
-        <!-- SECTION 4: 在此貼上你的文字（可替換以下整段） -->
-        <p>（請將你的文字貼在這裡）</p>
-      </div>
+      <div class="zone" id="zone2"><h3>The Hidden Cities 2: Leïsa</h3><p>In Leïsa, life is unhappy.
+People in the streets walk along wringing their hands, cursing the wailing children, leaning against the iron railings by the river, fists pressed against their temples. No sooner have they awakened from one nightmare in the morning than another begins.In the workshops, your fingers may at any moment be struck by a hammer or pricked by a needle; or you may have to face the pages of ledgers where merchants and bankers have made a hopeless mess of numbers; or the rows of empty glasses lining the tavern counter. Yet in such places, one can always bow one’s head to hide the sorrow in one’s eyes. Things are worse at home: even before entering, you can tell. In summer, the windows resound with quarrels and the crashing of broken cups and dishes.
+
+And yet, at every moment in Leïsa, you can hear a child’s laughter by the window. He laughs because he sees a dog leap upon a cottage roof to snatch a flatbread—the flatbread dropped by a stonemason working on the scaffold, who was just then shouting to a young waitress, “Good lady, let me have a taste!” The young woman, delighted, was carrying a bowl of soup to an umbrella-maker celebrating a successful deal. A noblewoman in love with a young officer was showing off her white parasol edged with lace at the racecourse. The officer on horseback smiled at her as he made his final jump. He was a happy man, though his horse was happier still—it saw a partridge flying above as it cleared the fence. The joyful bird had just been freed from its cage by a painter. The joyful painter had finished his illustration of the bird, depicting every red-and-yellow speckled feather. On the illustrated page were the words of a philosopher:
+
+“Even the sorrowful city of Leïsa has an invisible thread that, for an instant, links one living being to another, then loosens, stretching once more between two moving points to trace swiftly new figures. Thus, within every second, the unhappy city contains a happy city—it simply does not know it.”
+</p>
+</div>
+      <div class="zone" id="zone3"><h3>Những thành phố ẩn giấu II: Leïsa</h3><p>Ở Leïsa, cuộc sống không hạnh phúc. Trên đường phố, người ta vừa đi vừa xoắn chặt hai tay, mắng nhiếc những đứa trẻ đang khóc, dựa vào lan can sắt bên sông, nắm chặt tay đấm vào thái dương. Buổi sáng, vừa tỉnh dậy khỏi một cơn ác mộng, thì một cơn ác mộng khác lại bắt đầu. Trong xưởng, ngón tay của bạn có thể bị búa đập hoặc bị kim đâm bất cứ lúc nào; hoặc bạn phải đối diện với những con số sai be bét trong sổ sách của thương nhân và ngân hàng; hoặc nhìn vào hàng cốc rỗng xếp trên quầy rượu. Nhưng ở những nơi như vậy, chỉ cần cúi đầu xuống, bạn vẫn có thể che giấu ánh mắt u sầu. Còn ở trong nhà thì tệ hơn nữa: bạn không cần bước vào cũng biết — mùa hè, từ cửa sổ vọng ra tiếng cãi vã và tiếng chén đĩa vỡ.
+Thế nhưng, ở Leïsa, vào mọi khoảnh khắc đều nghe thấy tiếng cười của một đứa trẻ bên cửa sổ, bởi vì nó nhìn thấy một con chó nhảy lên mái nhà để cướp một chiếc bánh nướng; chiếc bánh đó là do người thợ xây trên giàn giáo làm rơi xuống; lúc ấy, ông ta đang lớn tiếng gọi với một cô hầu bàn trẻ: “Cô tốt bụng ơi, cho tôi nếm thử đi!”; cô gái trẻ đang vui vẻ bưng bát canh thịt mang cho một người thợ làm ô vừa ăn mừng thương vụ thành công; một quý bà yêu một sĩ quan trẻ đang khoe chiếc dù trắng viền ren ở trường đua; viên sĩ quan trên lưng ngựa mỉm cười với bà trong lần nhảy cuối cùng của mình; anh ta là một người hạnh phúc, nhưng con ngựa của anh còn hạnh phúc hơn — khi nhảy qua rào, nó nhìn thấy một con chim đa đa bay trên trời; con chim vui vẻ ấy vừa được một họa sĩ thả ra khỏi lồng; người họa sĩ vui vẻ đã hoàn thành bức minh họa về con chim, vẽ tỉ mỉ từng chiếc lông có đốm đỏ và vàng; trên trang minh họa ấy có dòng chữ của một triết gia:
+“Thành phố buồn bã Leïsa cũng có một sợi dây vô hình, trong khoảnh khắc nào đó nối liền sinh vật này với sinh vật khác, rồi lại buông ra, lại căng ra giữa hai điểm chuyển động, nhanh chóng vẽ nên một hình mới. Vì thế, trong mỗi giây, thành phố bất hạnh đều ẩn chứa một thành phố hạnh phúc — chỉ là chính nó không hề biết.”
+
+</p>
+</div>
+      <div class="zone" id="zone4"><h3>숨겨진 도시 Ⅱ: 라이사</h3><p>라이사에서는 삶이 행복하지 않다. 거리의 사람들은 걸으면서 두 손을 비틀고, 울부짖는 아이를 욕하고, 강가의 쇠난간에 기대어 주먹으로 관자놀이를 누른다. 아침에 악몽에서 막 깨어나면, 또 다른 악몽이 곧바로 시작된다. 작업장에서는 언제든 망치에 손가락이 맞거나 바늘에 찔릴 수 있다. 상인과 은행가의 장부에는 엉망으로 틀린 숫자들이 가득하고, 술집의 카운터 위에는 빈 잔들이 줄지어 서 있다. 하지만 그런 곳에서는 고개를 숙이기만 하면, 눈 속의 근심을 숨길 수 있다. 집 안은 더 나쁘다. 문 안으로 들어가지 않아도 안다. 여름이 되면 창문 너머로 다투는 소리와 깨진 그릇의 소리가 들려온다.
+그러나 라이사의 매 순간마다 창가에서는 아이의 웃음소리가 들린다. 그는 한 마리 개가 오두막 지붕 위로 뛰어올라 빵 한 조각을 낚아채는 것을 보았기 때문이다. 그 빵은 비계 위의 석공이 떨어뜨린 것이었다. 그는 그때 젊은 여급에게 소리쳤다. “아가씨, 한입만 맛보게 해줘요!” 젊은 여자는 기쁜 마음으로 고깃국 한 그릇을 들고, 거래 성사를 축하하는 우산 장인에게 가져가고 있었다. 젊은 장교를 사랑하는 한 귀부인은 경마장에서 레이스가 달린 흰 양산을 자랑하고 있었다. 말 위의 장교는 마지막 점프를 하며 그녀에게 미소를 지었다. 그는 행복한 사람이었지만, 그의 말은 그보다 더 행복했다. 장벽을 뛰어넘을 때, 하늘을 나는 자고새 한 마리를 보았기 때문이다. 그 즐거운 새는 방금 한 화가가 새장 밖으로 풀어준 것이었다. 그 행복한 화가는 그 새의 삽화를 완성했다. 붉고 노란 점무늬 깃털 하나하나를 세밀하게 그렸다. 그 삽화가 실린 책장 위에는 철학자의 말이 적혀 있었다.
+“우울한 도시 라이사에도 보이지 않는 실이 있다. 그것은 어느 순간 한 생명을 다른 생명과 이어 주었다가 다시 풀리고, 두 개의 움직이는 점 사이에 다시 뻗어 나가며 재빠르게 새로운 무늬를 그린다. 그러므로 불행한 도시는 매 순간마다 하나의 행복한 도시를 품고 있다. 다만, 그 자신이 그것을 알지 못할 뿐이다.”
+</p>
+</div>
     </div>
 
     <div class="btns">
@@ -140,7 +143,6 @@
         $ipTag.textContent = `IP：${ip}`;
         location.hash = '#done';
       } else {
-        // 嘗試關閉分頁（只有由腳本開啟的分頁才允許關閉）
         window.close();
       }
     });
