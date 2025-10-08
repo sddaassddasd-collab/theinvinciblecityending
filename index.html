@@ -59,6 +59,14 @@
     /* NEW: 音樂控制提示按鈕（當自動播放被擋時顯示） */
     #musicToggle{display:none}
     #musicToggle.show{display:inline-flex}
+    /* 固定 Thank You 按鈕在底端置中 */
+#thankyouBtn {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50; /* 確保不被其他元素蓋掉 */
+}
   </style>
 </head>
 <body>
